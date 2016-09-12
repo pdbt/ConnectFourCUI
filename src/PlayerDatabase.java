@@ -15,7 +15,7 @@ public class PlayerDatabase implements Serializable {
 	 * Constructs a new PlayerDatabase instance.
 	 * */
 	public PlayerDatabase() {
-		players = new HashMap<String, Integer>();
+		players = new HashMap<>();
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class PlayerDatabase implements Serializable {
 	 * @param p A Player object
 	 * */
 	public void addPlayer(Player p) {
-		players.put(p.getName(), Integer.valueOf(p.getWinCount()));
+		players.put(p.getName(), p.getWinCount());
 	}
 	
 }

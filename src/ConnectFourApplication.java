@@ -19,16 +19,16 @@ import java.util.Scanner;
  * @version 1.0 - 22.08.2016: Created
  */
 public class ConnectFourApplication {
-	
+
 	/**
 	 * Implements ConnectFourGame functionality and takes user keyboard input via console.
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 		System.out.println("Welcome to Connect Four!");
 		System.out.println("------------------------");
-		
+
 		ConnectFourGame game = new ConnectFourGame();
 		PlayerDatabase pd = new PlayerDatabase();
 		Scanner keyboard = new Scanner(System.in);
@@ -41,20 +41,17 @@ public class ConnectFourApplication {
 				file.createNewFile();
 				writeDatabaseFile(pd); 
 			}
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream("player-database.txt"));
-			pd = (PlayerDatabase) in.readObject();
-			in.close();
-		} catch (FileNotFoundException e1) {
-			System.out.println("Error: Player database not found. Program will now terminate.");
-			System.exit(0);
-		} catch (ClassNotFoundException e1) {
+			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("player-database.txt"))) {
+				pd = (PlayerDatabase) in.readObject();
+			}
+		} catch (FileNotFoundException | ClassNotFoundException e1) {
 			System.out.println("Error: Player database not found. Program will now terminate.");
 			System.exit(0);
 		} catch (IOException e1) {
 			System.out.println("Error: Updating player database failed. Program will now terminate.");
 			System.exit(0);
 		}
-		
+
 		// ENTER PLAYER ONE'S INFO
 		System.out.println("\nPlayer X, please enter your name (case sensitive):");
 		game.getPlayerX().setName(keyboard.nextLine());
@@ -78,13 +75,13 @@ public class ConnectFourApplication {
 			pd.addPlayer(game.getPlayerO());
 			System.out.println("Created new player record for "+game.getPlayerO().getName());
 		}
-		
+
 		// DISPLAY BOTH PLAYERS' LIFETIME WINS
 		System.out.println("\n"+game.getPlayerX().getName()+"'s lifetime wins: "+pd.getPlayers().get(game.getPlayerX().getName()));
 		System.out.println(game.getPlayerO().getName()+"'s lifetime wins: "+pd.getPlayers().get(game.getPlayerO().getName()));
-		
+
 		char playAgain = ' ';
-		
+
 		// START NEW GAME ROUND
 		do {
 			System.out.println("\nStarting new game...\n");
@@ -93,7 +90,7 @@ public class ConnectFourApplication {
 				game.getBoard().display();
 				System.out.println("\nIt's "+game.determineTurn().getName()+"'s turn");
 				int colChoice=0;
-				
+
 				// prompt player to make a move
 				do {
 					try {
@@ -107,7 +104,7 @@ public class ConnectFourApplication {
 
 				// if a valid move has been made, check for a winner
 				if (game.moveIsMade(colChoice, game.determineTurn().getToken())) { 
-					
+
 					if (game.getWinner().findWinner(game.getBoard())!=' ') {
 						if (game.getWinner().getWinnerToken()=='X') {
 							game.getBoard().display();
@@ -136,25 +133,25 @@ public class ConnectFourApplication {
 					}
 				}
 			} while (!game.isOver());
-			
+
 			// GAME OVER: print lifetime wins & ask to either play another round or quit
 			System.out.println("\n"+game.getPlayerX().getName()+"'s lifetime wins: "+pd.getPlayers().get(game.getPlayerX().getName()));
 			System.out.println(game.getPlayerO().getName()+"'s lifetime wins: "+pd.getPlayers().get(game.getPlayerO().getName()));
-			
+
 			do {
 				System.out.println("\nPlay another round? (Y/N)");
 				playAgain = Character.toUpperCase(keyboard.next().charAt(0));
 			} while (playAgain!='Y' && playAgain!='N');
-			
+
 			if (playAgain=='N') { // quit
 				System.out.println("\nQuitting game. Goodbye!");
 				keyboard.close();
 				System.exit(0);
 			}
-			
+
 		} while (playAgain=='Y'); // play a new round	
 	}
-	
+
 	/**
 	 * Writes a PlayerDatabase object to a .txt file.
 	 * @param pd a PlayerDatabase object containing player names and lifetime wins
@@ -163,9 +160,9 @@ public class ConnectFourApplication {
 	 */
 	public static void writeDatabaseFile(PlayerDatabase pd) 
 			throws FileNotFoundException, IOException {
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("player-database.txt"));
-		out.writeObject(pd);
-		out.close();
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("player-database.txt"))) {
+			out.writeObject(pd);
+		}
 	}
 
 }
