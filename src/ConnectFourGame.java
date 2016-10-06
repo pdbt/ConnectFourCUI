@@ -8,8 +8,8 @@
 public class ConnectFourGame {
 	
 	private Board board;
-	private PlayerX playerX;
-	private PlayerO playerO;
+	private Player playerX;
+	private Player playerO;
 	private int turnCount;
 	private CheckWinnerAlgorithm checkWinner;
 	
@@ -18,8 +18,8 @@ public class ConnectFourGame {
 	 */
 	public ConnectFourGame() {
 		this.board = new Board();
-		this.playerX = new PlayerX();
-		this.playerO = new PlayerO();
+		this.playerX = new Player('X');
+		this.playerO = new Player('O');
 		this.turnCount = 1;
 		this.checkWinner = new CheckWinnerAlgorithm();
 	}
@@ -36,7 +36,7 @@ public class ConnectFourGame {
 	 * Accesses player X and their attributes. 
 	 * @return a PlayerX object
 	 */
-	public PlayerX getPlayerX() {
+	public Player getPlayerX() {
 		return this.playerX;
 	}
 
@@ -44,7 +44,7 @@ public class ConnectFourGame {
 	 * Accesses player O and their attributes.
 	 * @return a PlayerO object
 	 */
-	public PlayerO getPlayerO() {
+	public Player getPlayerO() {
 		return this.playerO;
 	}
 

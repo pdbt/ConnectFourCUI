@@ -1,13 +1,20 @@
 /**
- * Abstract class specifying common attributes and behaviours of Player objects.
+ * The Player class contains accessor and modifier methods for attributes
+ * specific to a game player: name, token and win count.
  * 
  * @author Patricia Danielle Tan
  */
-public abstract class Player {
+public class Player {
 	
-	protected String name;
-	protected char token;
-	protected int winCount;
+	private String name;
+	private char token;
+	private int winCount;
+	
+	public Player(char token) {
+		this.name = "";
+		this.token = token;
+		this.winCount = 0;
+	}
 	
 	/**
 	 * Modifies the player's name.
