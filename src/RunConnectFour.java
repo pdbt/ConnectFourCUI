@@ -18,7 +18,7 @@ import java.util.Scanner;
  * @author Patricia Danielle Tan
  * @version 1.0 - 22.08.2016: Created
  */
-public class ConnectFourApplication {
+public class RunConnectFour {
 
 	/**
 	 * Implements ConnectFourGame functionality and takes user keyboard input via console.
